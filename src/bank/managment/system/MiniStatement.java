@@ -21,6 +21,10 @@ public class MiniStatement extends JFrame  {
         card.setBounds(20, 80, 300, 20);
         add(card);
         
+        JLabel balance = new JLabel();
+        balance.setBounds(20, 500, 300, 20);
+        add(balance);
+        
         try{
             conn c = new conn();
             ResultSet checkBalQuery = c.s.executeQuery("select * from login where pinNum = '"+pinNumber+"'");
@@ -33,6 +37,7 @@ public class MiniStatement extends JFrame  {
         
         try{
             conn c = new conn();
+            int bal = 0;
             ResultSet res = c.s.executeQuery("select * from bank where pin = '"+pinNumber+"'");
             
             StringBuilder statement = new StringBuilder("<html>");
@@ -43,15 +48,20 @@ public class MiniStatement extends JFrame  {
                          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
                          .append(res.getString("amount"))
                          .append("<br>");
+                if(res.getString("trans_type").equals("Deposite")){
+                    bal += Integer.parseInt(res.getString("amount"));  //if deposit--> add all amount                      
+                }else{
+                    bal -= Integer.parseInt(res.getString("amount"));  //if withdrwl--> subtract amount  
+                }
             }
-
             statement.append("</html>");
-            mini.setText(statement.toString());                        
+            mini.setText(statement.toString());             
+            balance.setText("your current account balance is Rs. " + bal);
         }catch(Exception e){
             System.out.println("Error: " + e);
         }
         
-        mini.setBounds(20, 140, 400, 200);
+        mini.setBounds(20, 120, 400, 200);
 
         
         setSize(400, 600);
