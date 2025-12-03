@@ -22,7 +22,7 @@ public class MiniStatement extends JFrame  {
         add(card);
         
         JLabel balance = new JLabel();
-        balance.setBounds(20, 500, 300, 20);
+        balance.setBounds(20, 400, 300, 20);
         add(balance);
         
         try{
